@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # @version: 1.0 (2024-09-23)
 # IMPORTANT WHEN SETTING UP THE .venv:
 # When setting up the virtual environment, make sure to install the following packages:
@@ -557,7 +556,6 @@ analysis_result_text = tk.Text(root, height=20, width=90)
 analysis_result_text.pack(pady=10)
 
 root.mainloop()
-=======
 # @version: 1.0 (2024-07-23)
 # IMPORTANT WHEN SETTING UP THE .venv:
 # When setting up the virtual environment, make sure to install the following packages:
@@ -1116,4 +1114,4 @@ analysis_result_text = tk.Text(root, height=20, width=90)
 analysis_result_text.pack(pady=10)
 
 root.mainloop()
->>>>>>> 4948d76f67ca88c713e849ddfafc937689fe1998
+
