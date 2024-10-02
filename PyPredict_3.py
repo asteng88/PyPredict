@@ -1,4 +1,4 @@
-# @version: 0.3 (2024-09-23)
+# @version: 0.4 (2024-10-02)
 # IMPORTANT WHEN SETTING UP THE .venv:
 # When setting up the virtual environment, make sure to install the following packages:
 # Create the environment using Python 3.10.9
