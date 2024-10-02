@@ -2,7 +2,7 @@
 # IMPORTANT WHEN SETTING UP THE .venv:
 # When setting up the virtual environment, make sure to install the following packages:
 # Create the environment using Python 3.10.9
-# pip install pandas statsmodels openpyxl pmdarima sklearn reportlab matplotlib
+# Install pandas statsmodels openpyxl pmdarima sklearn reportlab matplotlib xlrd
 # uninstall numpy and install version 1.23.5 (pip install numpy==1.23.5) - This is to ensure compatibility with the pmdarima package
 # icon generated from <a href="https://www.flaticon.com/free-icons/statistics" title="statistics icons">Statistics icons created by logisstudio - Flaticon</a>
 
@@ -30,13 +30,25 @@ def select_file():
     if filename:
         excel_file_path = filename
         try:
-            df = pd.read_excel(filename, header=None, engine='openpyxl')
+            # Check if the file is .xls format
+            if filename.lower().endswith('.xls'):
+                # Convert .xls to .xlsx
+                xls = pd.ExcelFile(filename)
+                xlsx_file = io.BytesIO()
+                with pd.ExcelWriter(xlsx_file, engine='openpyxl') as writer:
+                    for sheet_name in xls.sheet_names:
+                        df_sheet = pd.read_excel(xls, sheet_name=sheet_name)
+                        df_sheet.to_excel(writer, sheet_name=sheet_name, index=False)
+                xlsx_file.seek(0)
+                df = pd.read_excel(xlsx_file, header=None)
+            else:
+                df = pd.read_excel(filename, header=None, engine='openpyxl')
+            
             refresh_window()  # Automatically refresh the data when the file is loaded successfully
             messagebox.showinfo("Success", "Excel file loaded successfully!")
             
         except Exception as e:
             messagebox.showerror("Error", f"Failed to load Excel file:\n{e}")
-
 def refresh_window():
     global df, data_frame
     if excel_file_path == "":
