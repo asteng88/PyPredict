@@ -99,6 +99,20 @@ def refresh_window():
         # Update scroll region
         data_frame.update_idletasks()
         canvas.config(scrollregion=canvas.bbox("all"))
+
+        content_bbox = canvas.bbox("all")
+        canvas_width = canvas.winfo_width()
+        canvas_height = canvas.winfo_height()
+
+        if content_bbox[3] > canvas_height:
+            v_scrollbar.grid()
+        else:
+            v_scrollbar.grid_remove()
+
+        if content_bbox[2] > canvas_width:
+            h_scrollbar.grid()
+        else:
+            h_scrollbar.grid_remove()
         
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred:\n{e}")
@@ -445,15 +459,18 @@ data_display_frame.pack()
 
 # Create canvas
 canvas = tk.Canvas(data_display_frame, width=775, height=200)
-canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+canvas.grid(row=0, column=0, sticky="nsew")
 
 v_scrollbar = tk.Scrollbar(data_display_frame, orient=tk.VERTICAL, command=canvas.yview)
-v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+v_scrollbar.grid(row=0, column=1, sticky="ns")
 
 h_scrollbar = tk.Scrollbar(data_display_frame, orient=tk.HORIZONTAL, command=canvas.xview)
-h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+h_scrollbar.grid(row=1, column=0, sticky="ew")
 
 canvas.configure(yscrollcommand=v_scrollbar.set, xscrollcommand=h_scrollbar.set)
+
+data_display_frame.grid_rowconfigure(0, weight=1)
+data_display_frame.grid_columnconfigure(0, weight=1)
 
 # Create a frame inside the canvas
 data_frame = tk.Frame(canvas)
@@ -462,6 +479,20 @@ canvas.create_window((0,0), window=data_frame, anchor="nw")
 # Update scrollregion when the canvas size changes
 def on_configure(event):
     canvas.config(scrollregion=canvas.bbox("all"))
+
+    content_bbox = canvas.bbox("all")
+    canvas_width = canvas.winfo_width()
+    canvas_height = canvas.winfo_height()
+
+    if content_bbox[3] > canvas_height:
+        v_scrollbar.grid()
+    else:
+        v_scrollbar.grid_remove()
+
+    if content_bbox[2] > canvas_width:
+        h_scrollbar.grid()
+    else:
+        h_scrollbar.grid_remove()
 
 canvas.bind('<Configure>', on_configure)
 
